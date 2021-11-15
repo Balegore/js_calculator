@@ -11,90 +11,115 @@ function multiply(x, y){
 }
 
 function divide(x, y){
-    if(x === 0){
-        return "DIV/0!"
+    if(y === 0){
+        return "DIV/0!";
     }
     else{
         return x / y;
     }    
 }
 
-function operate(){     //calls other functions
-    let x = Number(calculation.x)
-    let y = Number(calculation.y)
+function operate(){     //calls other functions to do math with current numbers
+    let x = Number(calculation.firstNumber)
+    let y = Number(calculation.secondNumber)
     
     if(typeof(x) == 'number' && typeof(y) == 'number'){
         switch(calculation.operator){
             case 'divide': 
                 calculation.answer = divide(x,y);
+                calculation.lastOperation = x + '÷' + y;
                 break;
             case 'multiply': 
                 calculation.answer = multiply(x,y);
+                calculation.lastOperation = x + '×' + y; 
                 break;
             case 'add':
                 calculation.answer = add(x,y);
+                calculation.lastOperation = x + '+' + y; 
                 break;
             case 'subtract':
                 calculation.answer = subtract(x,y);
-                break;            
-        }       
-        calculation.x = calculation.answer.toString();
-        calculation.y = '';
+                calculation.lastOperation = x + '−' + y; 
+                break;                        
+        }
+
+        calculation.answer = Math.round((calculation.answer + Number.EPSILON) * 100) / 100; //round to 2 decimal places
+
+        calculation.firstNumber = calculation.answer; //set first number to answer
+        calculation.secondNumber = '';  //reset second number
+        calculation.onFirstNumber = false; 
+        
+        displayFormula(calculation.lastOperation);
+        displayNumber(calculation.answer);
     }
-    return;
+        return;
 
 }
 
+function displayNumber(string){ //displays input or answer to calculator
+    document.getElementById('display').innerText = string;      
+}
 
-function clear(){
-    calculation.x = '';
-    calculation.y = '';
-    calculation.operator = ''; 
-    calculation.firstNumber = true;
-    calculation.secondNumber = false;
-    calculation.answer = '';  
+function displayFormula(string){ //displays formula to calculator
+    document.getElementById('formula').innerText= string;
+}
+
+function clear(){   //clears everything to default
+    calculation.firstNumber = '';
+    calculation.secondNumber = '';
+    calculation.operator = '';
+    calculation.lastOperation = ''; 
+    calculation.onFirstNumber = true;
+    calculation.answer = '';
+    document.getElementById('display').innerHTML = "&nbsp";
+    document.getElementById('formula').innerHTML = "&nbsp";  
 }
 
 function addNumber(number){
-    if(calculation.firstNumber){
-        calculation.x = calculation.x + number;
+    if(calculation.onFirstNumber){  //add to first number if they haven't added an operator 
+        calculation.firstNumber = calculation.firstNumber + number;
+        displayNumber(calculation.firstNumber);
     }
-    else{
-        calculation.secondNumber = true;     
-        calculation.y = calculation.y + number;
-    } 
-}
-
-function decimalToggle(n){
-  // (Number.isInteger(n)) ? buttons;
-        
+    else{ //add to second number should only function if operator has been selected already 
+        calculation.secondNumber = calculation.secondNumber + number;
+        displayNumber(calculation.secondNumber);
+    }
 }
 
 function addDecimal(){
-    if(calculation.firstNumber){
-        calculation.x = calculation.x + ".";
+
+    let x = Number(calculation.firstNumber)
+    let y = Number(calculation.secondNumber)
+
+    if(calculation.onFirstNumber){
+        if(x%1 != 0){
+            return;
+        }
+        else{            
+            calculation.firstNumber = calculation.firstNumber + ".";
+            calculation.onFirstNumber = true;
+        }
     }
     else{
-    calculation.secondNumber = true;     
-    calculation.y = calculation.y + "."; 
+        if(y%1 != 0){
+            return;
+        }
+        else{
+            calculation.secondNumber = calculation.secondNumber + "."; 
+        }   
     }     
 }
 
-function addOperator(operator){
-    if(calculation.secondNumber)
-        {
-        operate();
-        calculation.operator = operator;
-        }
-    else{
-    calculation.operator = operator;
-    calculation.firstNumber = false;
+function addOperator(operator){     //handles adding operator and decision if first number is new or answer from previous equation
+    if(calculation.onFirstNumber){    //if on first number switch to second, if second opererate on number
+        calculation.onFirstNumber = false;
     }
+    else{
+        operate();
+    }
+    calculation.operator = operator;
 }
-
 function buttonPress(pressButton){
-
-    console.log(pressButton);
 
     switch(pressButton){
         case '0':
@@ -104,7 +129,7 @@ function buttonPress(pressButton){
             addNumber(pressButton);
             break;
         case 'decimal':
-            addDecimal();
+            addDecimal();            
             break;
         case 'subtract': 
         case 'add': 
@@ -117,23 +142,21 @@ function buttonPress(pressButton){
             break;
         case 'equals': 
             operate();
-            calculation.operate = '';
     };    
-  console.table(calculation);  
-
+console.table(calculation);
 }
 
-let calculation = { x: '', 
-                    y: '', 
+let calculation = { firstNumber: '', 
+                    secondNumber: '', 
                     operator: '', 
-                    firstNumber: true,
-                    secondNumber: false,
+                    onFirstNumber: true,
                     decimal: false,
+                    lastOperation: '',
                     answer: ''};
 
 const buttons = document.querySelector("#allButtons");
-const displayScreen = document.querySelector("display");
-const formulaScreen = document.querySelector("formula");
+const displayScreen = document.getElementById("#display");
+const formulaScreen = document.getElementById("#formula");
 
 console.log(buttons);
 
