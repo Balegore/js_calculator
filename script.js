@@ -57,12 +57,27 @@ function clear(){
 
 function addNumber(number){
     if(calculation.firstNumber){
-        calculation.x = number + calculation.x
+        calculation.x = calculation.x + number;
+    }
+    else{
+        calculation.secondNumber = true;     
+        calculation.y = calculation.y + number;
+    } 
+}
+
+function decimalToggle(n){
+  // (Number.isInteger(n)) ? buttons;
+        
+}
+
+function addDecimal(){
+    if(calculation.firstNumber){
+        calculation.x = calculation.x + ".";
     }
     else{
     calculation.secondNumber = true;     
-    calculation.y = number + calculation.y;
-    } 
+    calculation.y = calculation.y + "."; 
+    }     
 }
 
 function addOperator(operator){
@@ -77,28 +92,35 @@ function addOperator(operator){
     }
 }
 
-function buttonPress(){
-  
-    switch(this.id){
+function buttonPress(pressButton){
+
+    console.log(pressButton);
+
+    switch(pressButton){
         case '0':
         case '1': case '2': case '3': 
         case '4': case '5': case '6': 
         case '7': case '8': case '9':
-            addNumber(this.id);
+            addNumber(pressButton);
+            break;
+        case 'decimal':
+            addDecimal();
             break;
         case 'subtract': 
         case 'add': 
         case 'multiply':
         case 'divide':
-            addOperator(this.id);
+            addOperator(pressButton);
             break;        
         case 'clear':
             clear();
             break;
-        case 'equals':
+        case 'equals': 
             operate();
+            calculation.operate = '';
     };    
-    console.table(calculation);    
+  console.table(calculation);  
+
 }
 
 let calculation = { x: '', 
@@ -106,11 +128,18 @@ let calculation = { x: '',
                     operator: '', 
                     firstNumber: true,
                     secondNumber: false,
+                    decimal: false,
                     answer: ''};
 
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelector("#allButtons");
 const displayScreen = document.querySelector("display");
 const formulaScreen = document.querySelector("formula");
 
-buttons.forEach(buttons => buttons.addEventListener('click', buttonPress));
+console.log(buttons);
+
+buttons.addEventListener('click', button => {
+    if(button.target.className === 'number' || 'number zero'){
+        buttonPress(button.target.id)
+    }
+});
 
