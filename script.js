@@ -19,9 +19,11 @@ function divide(x, y){
     }    
 }
 
+//equal sign doesn't work properly if only one number is inputted need to fix
+
 function operate(){     //calls other functions to do math with current numbers
     let x = Number(calculation.firstNumber)
-    let y = Number(calculation.secondNumber)
+    let y = Number(calculation.secondNumber) 
     
     if(typeof(x) == 'number' && typeof(y) == 'number'){
         switch(calculation.operator){
@@ -41,19 +43,17 @@ function operate(){     //calls other functions to do math with current numbers
                 calculation.answer = subtract(x,y);
                 calculation.lastOperation = x + '−' + y; 
                 break;                        
-        }
-
-        calculation.answer = Math.round((calculation.answer + Number.EPSILON) * 100) / 100; //round to 2 decimal places
-
-        calculation.firstNumber = calculation.answer; //set first number to answer
-        calculation.secondNumber = '';  //reset second number
-        calculation.onFirstNumber = false; 
-        
-        displayFormula(calculation.lastOperation);
-        displayNumber(calculation.answer);
+                
+            }
+            calculation.answer = Math.round((calculation.answer + Number.EPSILON) * 100) / 100; //round to 2 decimal places
+    
+            calculation.firstNumber = calculation.answer; //set first number to answer
+            calculation.onFirstNumber = true; 
+            
+            displayFormula(calculation.lastOperation);
+            displayNumber(calculation.answer);
     }
-        return;
-
+        return; 
 }
 
 function displayNumber(string){ //displays input or answer to calculator
@@ -98,6 +98,7 @@ function addDecimal(){
         else{            
             calculation.firstNumber = calculation.firstNumber + ".";
             calculation.onFirstNumber = true;
+            displayNumber(calculation.firstNumber);
         }
     }
     else{
@@ -105,19 +106,23 @@ function addDecimal(){
             return;
         }
         else{
-            calculation.secondNumber = calculation.secondNumber + "."; 
+            calculation.secondNumber = calculation.secondNumber + ".";
+            displayNumber(calculation.secondNumber); 
         }   
     }     
 }
 
 function addOperator(operator){     //handles adding operator and decision if first number is new or answer from previous equation
-    if(calculation.onFirstNumber){    //if on first number switch to second, if second opererate on number
-        calculation.onFirstNumber = false;
-    }
-    else{
+    
+    
+    if(calculation.onFirstNumber === false){
         operate();
-    }
+    }   
+    
+    calculation.onFirstNumber = false;
+    calculation.secondNumber = '';
     calculation.operator = operator;
+
 }
 function buttonPress(pressButton){
 
@@ -142,8 +147,45 @@ function buttonPress(pressButton){
             break;
         case 'equals': 
             operate();
+            break;
+        default:   //do nothing 
+            break;
     };    
-console.table(calculation);
+}
+
+function keyInput(keyPressed){
+
+    switch(keyPressed){       
+            case '0':
+            case '1': case '2': case '3': 
+            case '4': case '5': case '6': 
+            case '7': case '8': case '9':
+                document.getElementById(keyPressed).click();
+                break;
+            case '.':
+                document.getElementById('decimal').click();          
+                break;
+            case '-': 
+                document.getElementById('subtract').click(); 
+                break;
+            case '+': 
+            document.getElementById('add').click();
+                break; 
+            case '*': case 'x':
+                document.getElementById('multiply').click(); 
+                break;
+            case '/':
+                document.getElementById('divide').click(); 
+                break;        
+            case 'c':
+                document.getElementById('clear').click();               
+                break;
+            case '=': 
+                document.getElementById('equals').click(); 
+                break;
+            default:   //do nothing return out of function
+            return;       
+    }
 }
 
 let calculation = { firstNumber: '', 
@@ -166,3 +208,4 @@ buttons.addEventListener('click', button => {
     }
 });
 
+window.addEventListener('keydown', e => keyInput(e.key));
