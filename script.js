@@ -11,50 +11,57 @@ function multiply(x, y){
 }
 
 function divide(x, y){
-    if(y === 0){
-        return "DIV/0!";
-    }
-    else{
-        return x / y;
-    }    
+    return x / y;
+   
 }
 
 //equal sign doesn't work properly if only one number is inputted need to fix
 
 function operate(){     //calls other functions to do math with current numbers
-    let x = Number(calculation.firstNumber)
-    let y = Number(calculation.secondNumber) 
-    
-    if(typeof(x) == 'number' && typeof(y) == 'number'){
-        switch(calculation.operator){
-            case 'divide': 
-                calculation.answer = divide(x,y);
-                calculation.lastOperation = x + '÷' + y;
-                break;
-            case 'multiply': 
-                calculation.answer = multiply(x,y);
-                calculation.lastOperation = x + '×' + y; 
-                break;
-            case 'add':
-                calculation.answer = add(x,y);
-                calculation.lastOperation = x + '+' + y; 
-                break;
-            case 'subtract':
-                calculation.answer = subtract(x,y);
-                calculation.lastOperation = x + '−' + y; 
-                break;                        
-                
-            }
-            calculation.answer = Math.round((calculation.answer + Number.EPSILON) * 100) / 100; //round to 2 decimal places
-    
-            calculation.firstNumber = calculation.answer; //set first number to answer
-            calculation.onFirstNumber = true; 
-            
-            displayFormula(calculation.lastOperation);
-            displayNumber(calculation.answer);
+    if(calculation.firstNumber === '' || calculation.secondNumber === ''){ //break function if first number doesn't exist 
+    return;
     }
-        return; 
-}
+    else{
+        let x = Number(calculation.firstNumber)
+        let y = Number(calculation.secondNumber) 
+        
+            switch(calculation.operator){
+                case 'divide':
+                    calculation.lastOperation = x + '÷' + y;
+                        if(y === 0){                            
+                            clear();
+                            displayFormula("Error"); 
+                            displayNumber('DIV !0');                                                
+                            return;
+                        }
+                        else{ 
+                        calculation.answer = divide(x,y);
+                        }
+                    break;
+                case 'multiply': 
+                    calculation.answer = multiply(x,y);
+                    calculation.lastOperation = x + '×' + y; 
+                    break;
+                case 'add':
+                    calculation.answer = add(x,y);
+                    calculation.lastOperation = x + '+' + y; 
+                    break;
+                case 'subtract':
+                    calculation.answer = subtract(x,y);
+                    calculation.lastOperation = x + '−' + y; 
+                    break;                        
+                    
+                }
+                calculation.answer = Math.round((calculation.answer + Number.EPSILON) * 100) / 100; //round to 2 decimal places
+        
+                calculation.firstNumber = calculation.answer; //set first number to answer
+                calculation.onFirstNumber = true; 
+                
+                displayFormula(calculation.lastOperation);
+                displayNumber(calculation.answer);
+            }
+    return; 
+    }
 
 function displayNumber(string){ //displays input or answer to calculator
     document.getElementById('display').innerText = string;      
