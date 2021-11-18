@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
 
 body{
     display: flex;
@@ -18,7 +19,8 @@ button{
     border-radius: 4px;
     margin: 1px;
     cursor: pointer;
-    font-size: 16px;     
+    font-size: 24px; 
+    font-family: 'Open Sans', sans-serif;    
 }
 
 
@@ -39,7 +41,16 @@ button:active {
 }
 
 .number.zero{
-    width: 150px;
+    width: 152px; /* 2 extra pixels for gap */
+}
+
+.symbol{
+    background-color: #ffd480;
+}
+
+.equals{
+    background-color: #3b4245;
+    color: white;
 }
 
 .calculator{
@@ -59,12 +70,11 @@ button:active {
     display: flex;
     flex-flow: column;
     background-color: #4b5807;
-    color: #151d07;    
-    
+    color: #151d07;       
     align-items: flex-end;
     font-size: 46px;    
     margin-top: 20px;
-    height: auto;
+    height: 95px;
     width: 300px;
     align-self: center;
     border:  inset 5px black;
@@ -110,6 +120,10 @@ button:active {
 }
 
 .logo{
-    align-content: center;
-    text-align: right;
+    align-self: center;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    margin-left: 15px;   
+    
 }

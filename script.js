@@ -15,8 +15,6 @@ function divide(x, y){
    
 }
 
-//equal sign doesn't work properly if only one number is inputted need to fix
-
 function operate(){     //calls other functions to do math with current numbers
     if(calculation.firstNumber === '' || calculation.secondNumber === ''){ //break function if first number doesn't exist 
     return;
@@ -194,7 +192,7 @@ function addOperator(operator){     //handles adding operator and decision if fi
     calculation.operator = operator;
 
 }
-function buttonPress(pressButton){
+function buttonPress(pressButton){ 
 
     switch(pressButton){
         case '0':
@@ -277,7 +275,7 @@ function keyInput(keyPressed){
 console.log(keyPressed);
 }
 
-let maxLength = 7; //set max length for screen
+let maxLength = 7; //set max length for screen does not count decimal or negative sign
 
 let calculation = { firstNumber: '', 
                     secondNumber: '', 
@@ -301,4 +299,3 @@ buttons.addEventListener('click', button => {
 
 window.addEventListener('keydown', e => keyInput(e.key));
 
-/* need to implement the backspace and +/- key as awell as string length check */
