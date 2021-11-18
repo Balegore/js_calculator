@@ -12,8 +12,8 @@ body{
 button{
     background-color: #d8d7dc;
     border: none;
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
     border: 1px black solid;   
     border-radius: 4px;
     margin: 1px;
@@ -27,9 +27,10 @@ button:active {
     transform: translateY(1px);
 }
 
-#allButtons{
+#buttonGrid{
     display: flex;
-    flex-flow: column; 
+    flex-flow: column;
+    align-items: center; 
 }
 
 .buttonRow{
@@ -37,15 +38,15 @@ button:active {
     flex-flow: row; 
 }
 
-.top{
-    justify-content: space-between;
+.number.zero{
+    width: 150px;
 }
 
 .calculator{
     display: flex;
     flex-flow: column;
     background-color: #313746;
-    width: 200px;
+    width: 320px;
     height: auto;
     padding: 20px;
     margin-top: 100px;
@@ -59,28 +60,56 @@ button:active {
     flex-flow: column;
     background-color: #4b5807;
     color: #151d07;    
-    flex-grow: .25;
+    
     align-items: flex-end;
-    font-size: 36px;    
-    margin-bottom: 10px;
-    height: 60px;
-    border:  inset 2px black;
+    font-size: 46px;    
+    margin-top: 20px;
+    height: auto;
+    width: 300px;
+    align-self: center;
+    border:  inset 5px black;
     font-family: 'Orbitron', sans-serif;
 }
 
 .formulaScreen{
     margin-right: 5px;
-    font-size: 12px;
+    font-size: 20px;
     padding-right: 2px;
 }
 
 .numberScreen{
     margin-right: 5px;
     margin-left: 10px;
-    font: 24px;
+    font: 36px;
 }
 
-.number.zero{
-    width: 100px;
+.middle{
+    display: flex;
+    flex: row;
+    justify-content: space-between;
+    margin: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
+.solar{
+    display: flex;
+    flex: row;
+    background-color: black;
+    height: 40px;
+    width: 120px;
+    border:  inset 2px black;
+}
+
+.solarpanel{
+    border: grey solid 1px;
+    height: auto;
+    width: auto;
+    flex-basis: 100%;
+
+}
+
+.logo{
+    align-content: center;
+    text-align: right;
+}
